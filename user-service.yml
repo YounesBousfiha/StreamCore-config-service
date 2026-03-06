@@ -2,9 +2,9 @@ spring:
   application:
     name: user-service
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/user_db}
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5434/user_db}
     username: ${DATABASE_USERNAME:postgres}
-    password: ${DATABASE_PASSWORD:test123}
+    password: ${DATABASE_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
