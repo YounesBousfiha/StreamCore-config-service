@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: video-service
+          uri: lb://video-service
+          predicates:
+            - Path=/api/videos/**
+          filters:
+            - StripPrefix=0
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - StripPrefix=0
+        - id: discovery-service
+          uri: lb://discovery-service
+          predicates:
+            - Path=/eureka/**
+          filters:
+            - StripPrefix=0
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:
+        cors-configurations:
+          "[/**]":
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - PATCH
+              - OPTIONS
+            allowedHeaders: "*"
+            exposedHeaders:
+              - Content-Type
+              - Authorization
+            maxAge: 3600
+
+server:
+  port: ${SERVER_PORT:8080}
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty.http.client: DEBUG
